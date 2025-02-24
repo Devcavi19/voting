@@ -1,0 +1,9 @@
+* text=auto
+*.css text
+*.js text
+*.sql text
+*.less text
+*.scss text
+*.svg text
+*.md text
+*.php text
