@@ -60,7 +60,9 @@
 								if (isset($_POST['ok'])){
 								
 								$username=$_POST['username'];
-								$password=$_POST['password'];
+								
+								$password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+								
 								$firstname=$_POST['firstname'];
 								$lastname=$_POST['lastname'];
 								$Phone=$_POST['Phone'];
