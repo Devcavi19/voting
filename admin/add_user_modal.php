@@ -23,7 +23,7 @@
 										
 											<div class="form-group">
 												<label>Password</label>
-													<input class="form-control" type ="text" name = "password" placeholder="Password" required="true">
+													<input class="form-control" type ="password" name = "password" placeholder="Password" required="true">
 											</div>
 											<div class="form-group">
 												<label>Firstname</label>
@@ -36,7 +36,7 @@
 											
 											<div class="form-group">
 												<label>Phone Number</label>
-													<input class="form-control"  type = "number" name = "Phone" placeholder="Please enter contact number" required="true">
+													<input class="form-control" type="text" name="Phone" placeholder="Please enter contact number" maxlength="15" required="true">
 											</div>
 
 											<div class="form-group">
@@ -60,33 +60,49 @@
 								if (isset($_POST['ok'])){
 								
 								$username=$_POST['username'];
-								$password=$_POST['password'];
+								
+								$password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+								
 								$firstname=$_POST['firstname'];
 								$lastname=$_POST['lastname'];
 								$Phone=$_POST['Phone'];
 								$email=$_POST['email'];
 										
-		
-		
+								// Check if username already exists
 								$query = $conn->query("SELECT * FROM users WHERE username='$username'") or die ($conn->error);
 								$count1 = $query->num_rows;
 
-								if ($count1  > 0){ 
+								// Check if email already exists
+								$query_email = $conn->query("SELECT * FROM users WHERE email='$email'") or die ($conn->error);
+								$count_email = $query_email->num_rows;
+
+								if ($count1 > 0){ 
 							?>
 										<script>
-											alert("User Already Exist");
+											alert("Error! This username is already in use");
+										</script>
+							<?php
+								}
+								else if ($count_email > 0 && !empty($email)){
+							?>
+										<script>
+											alert("Error! This email is already in use");
 										</script>
 							<?php
 								}
 								else{
 									$conn->query("INSERT INTO users(username,password,firstname,lastname,Phone,email) VALUES('$username','$password','$firstname','$lastname','$Phone','$email')");
-									header('location:user.php');
-							?>
+									// Set a session variable with success message
+									session_start();
+									$_SESSION['success_msg'] = true;
+									?>
 									<script>
-										alert('User Data Successfully Save');
+										alert('System user successfully created');
+										window.location = 'user.php';
 									</script>
-							<?php 
-									}
+									<?php
+									exit();
+								}
 								} 
 							?>	
                                     </div>
