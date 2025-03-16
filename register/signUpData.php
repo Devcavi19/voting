@@ -17,7 +17,7 @@
 	if ($count  < 1){
 ?>
 	<script>
-			alert('Invalid Student ID. Please ensure you are using your school-issued ID that has been pre-registered in the system.');
+			alert( 'Invalid Student ID');
 			window.location='index.php';
 	</script>		
 <?php
@@ -58,3 +58,4 @@
 ?>
 
 
+					  

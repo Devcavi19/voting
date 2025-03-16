@@ -16,5 +16,4 @@
 <!-- end of modal -->  
 
 
-	<?php }
-?>
+<?php ?>

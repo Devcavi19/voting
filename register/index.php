@@ -21,7 +21,7 @@
 											<div class="form-field">
 												<label>Student ID</label><br/>
 												<input class ="form-control" type = "text" name = "id_number" placeholder = "Student ID" required="true">
-												<small class="form-text text-muted">Enter your school-issued student ID. Your ID must be pre-registered in the system.</small>
+													
 											</div>
 											
 											<div class="form-field">											
