@@ -10,7 +10,7 @@
                 <li>
                     <a href="../voting1/index.php">Home</a>
                 </li>
-                <li><a href="../candidate_path.php">Candidates</a></li>
+                <li><a href="candidate_path.php">Candidates</a></li>
             
                 <li><a href="voters.php">Voter List</a></li>
             </ul>
