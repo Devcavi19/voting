@@ -5,34 +5,31 @@
 	{
 		$username=$_POST['username'];
 		$password=$_POST['password'];
-		$login_id = $_POST['login_id'];
 		
 		// Check for empty fields
-		if(empty($username) || empty($password) || empty($login_id)) {
+		if(empty($username) || empty($password)) {
 			?>
 			<script type="text/javascript">
-			alert('Error! Login field cannot be empty, please try again');
+			alert('Error! Login fields cannot be empty, please try again');
 			</script>
 			<?php
 			return;
 		}
 		
-		// Check if username and login_id exist
-		$user_check = $conn->query("SELECT * FROM users WHERE username = '$username' AND user_id = '$login_id'");
-		if($user_check->num_rows == 0) {
+		// Check if username exists and verify password
+		$query = $conn->query("SELECT * FROM users WHERE username = '$username'");
+		if($query->num_rows == 0) {
 			?>
 			<script type="text/javascript">
-			alert('Error! The email or login ID does not exist. Please try again');
+			alert('Error! Username does not exist. Please try again');
 			window.location = 'index.php';
 			</script>
 			<?php
 			return;
 		}
 		
-		// Check if password matches
-		$query = $conn->query("SELECT * FROM users WHERE username = '$username' AND user_id = '$login_id'");
 		$fetch = $query->fetch_array();
-		if($fetch['password'] != $password) {
+		if(!password_verify($password, $fetch['password'])) {
 			?>
 			<script type="text/javascript">
 			alert('Error! Password did not match');
@@ -43,21 +40,15 @@
 		}
 		
 		// If all checks pass, proceed with login
-		$query = $conn->query("SELECT * FROM users WHERE username = '$username' AND password = '$password' AND user_id = '$login_id'") or die($conn->error);
-		$rows = $query->num_rows;
-		$fetch = $query->fetch_array();
+		$conn->query("INSERT INTO logins(username) VALUES('$username');") or die($conn->error);//Inserts username for tracking logs..security feature
 		
-		if ($rows > 0) {
-			$conn->query("INSERT INTO logins(username) VALUES('$username');") or die($conn->error);//Inserts username for tracking logs..security feature
-			
-			?>
-			<script type="text/javascript">
-			alert('WelCome!');
-			window.location = 'candidate.php';
-			</script>
-			<?php
-			session_start();
-			$_SESSION['id'] = $fetch['user_id'];
-		}
+		session_start();
+		$_SESSION['id'] = $fetch['user_id'];
+		?>
+		<script type="text/javascript">
+		alert('Welcome!');
+		window.location = 'candidate.php';
+		</script>
+		<?php
 	}
 ?>
