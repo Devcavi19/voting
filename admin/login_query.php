@@ -29,10 +29,9 @@
 			return;
 		}
 		
-		// Check if password matches
-		$query = $conn->query("SELECT * FROM user WHERE username = '$username' AND user_id = '$login_id'");
-		$fetch = $query->fetch_array();
-		if($fetch['password'] != $password) {
+		// Get user data and verify password
+		$fetch = $user_check->fetch_array();
+		if(!password_verify($password, $fetch['password'])) {
 			?>
 			<script type="text/javascript">
 			alert('Error! Password did not match');
@@ -43,19 +42,13 @@
 		}
 		
 		// If all checks pass, proceed with login
-		$query = $conn->query("SELECT * FROM user WHERE username = '$username' AND password = '$password' AND user_id = '$login_id'") or die($conn->error);
-		$rows = $query->num_rows;
-		$fetch = $query->fetch_array();
-		
-		if ($rows > 0) {
-			?>
-			<script type="text/javascript">
-			alert('WelCome!');
-			window.location = 'candidate.php';
-			</script>
-			<?php
-			session_start();
-			$_SESSION['id'] = $fetch['user_id'];
-		}
+		?>
+		<script type="text/javascript">
+		alert('WelCome!');
+		window.location = 'candidate.php';
+		</script>
+		<?php
+		session_start();
+		$_SESSION['id'] = $fetch['user_id'];
 	}
 ?>
