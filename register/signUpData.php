@@ -14,48 +14,44 @@
 
 			$query = $conn->query("SELECT * FROM ids WHERE id_number='$id_number'") or die ($conn->error);
 			$count = $query->fetch_array();
-	if ($count  < 1){
-?>
-	<script>
-			alert( 'Invalid Student ID');
-			window.location='index.php';
-	</script>		
-<?php
-	}
-	else{
-		
-		$query = $conn->query("SELECT * FROM voters WHERE id_number='$id_number'") or die ($conn->error);
-		$count1 = $query->fetch_array();
-		if ($count1 == 0) {
-			if ($password == $password1) {
-				$conn->query("insert into voters(id_number, password, firstname,lastname, gender,prog_study,year_level,status, date) VALUES('$id_number', '".md5($password)."','$firstname','$lastname', '$gender','$prog_study', '$year_level','Unvoted', '$date')");
+			if ($count  < 1){
 			?>
-	            <script>
-			        alert( 'Successfully Registered');
-			         window.location='../voters.php';
-	            </script>
-            <?php
-			}else{
-				?>
-	            <script>
-			        alert( 'Your Passwords Did Not Match');
-			         window.location='index.php';
-	            </script>
-            <?php
+				<script>
+					alert('Invalid Student ID');
+					window.location='index.php';
+				</script>		
+			<?php
+			} else {
+				$query = $conn->query("SELECT * FROM voters WHERE id_number='$id_number'") or die ($conn->error);
+				$count1 = $query->fetch_array();
+				if ($count1 == 0) {
+					if ($password == $password1) {
+						$hashed_password = password_hash($password, PASSWORD_DEFAULT);
+						$conn->query("INSERT INTO voters(id_number, password, firstname, lastname, gender, prog_study, year_level, status, date) VALUES('$id_number', '$hashed_password', '$firstname', '$lastname', '$gender', '$prog_study', '$year_level', 'Unvoted', '$date')");
+						?>
+						<script>
+							alert('Successfully Registered');
+							window.location='../voters.php';
+						</script>
+						<?php
+					} else {
+						?>
+						<script>
+							alert('Your Passwords Did Not Match');
+							window.location='index.php';
+						</script>
+						<?php
+					}
+				} else {
+					?>
+					<script>
+						alert('ID Already Registered');
+						window.location='../voters.php';
+					</script>
+					<?php
+				}
 			}
-		}else{
-			?>
-	            <script>
-			        alert( 'ID Already Registered');
-			         window.location='../voters.php';
-	            </script>
-            <?php
-		}
-		
-
-	}
-} 
+		} 
 ?>
 
 
-					  
