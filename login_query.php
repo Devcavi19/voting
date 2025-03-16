@@ -20,7 +20,7 @@
 		if($id_check->num_rows == 0) {
 			?>
 			<script type="text/javascript">
-				alert('Error! Invalid Login/Email')
+				alert('Error! The email or login ID does not exist. Please try again')
 			</script>
 			<?php
 			return;
