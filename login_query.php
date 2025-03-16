@@ -20,15 +20,15 @@
 		if($id_check->num_rows == 0) {
 			?>
 			<script type="text/javascript">
-				alert('Error! The email or login ID does not exist. Please try again')
+				alert('Error! The student ID does not exist. Please try again')
 			</script>
 			<?php
 			return;
 		}
 		
-		// Check if password matches
-		$result = $conn->query("SELECT * FROM voters WHERE id_number = '$idno' && password = '".md5($password)."'");
-		if($result->num_rows == 0) {
+		// Get voter data and verify password
+		$voter = $id_check->fetch_array();
+		if(!password_verify($password, $voter['password'])) {
 			?>
 			<script type="text/javascript">
 				alert('Error! Password did not match')
@@ -38,27 +38,27 @@
 		}
 		
 		// Check if account is active and unvoted
-		$result = $conn->query("SELECT * FROM voters WHERE id_number = '$idno' && password = '".md5($password)."' && `account` = 'active' && `status` = 'Unvoted'") or die(mysqli_errno($conn));
-		$row = $result->fetch_array();
-		$voted = $conn->query("SELECT * FROM `voters` WHERE id_number = '$idno' && password = '".md5($password)."' && `status` = 'Voted'")->num_rows;
-		$numberOfRows = $result->num_rows;				
-		
-		if ($numberOfRows > 0){
-			session_start();
-			$_SESSION['voters_id'] = $row['voters_id'];
-			header('location:vote.php');
-		} else if($voted == 1){
-			?>
-			<script type="text/javascript">
-				alert('Sorry You Already Voted')
-			</script>
-			<?php
-		} else {
+		if($voter['account'] != 'active') {
 			?>
 			<script type="text/javascript">
 				alert('Your account is not Activated')
 			</script>
 			<?php
+			return;
 		}
+		
+		if($voter['status'] == 'Voted') {
+			?>
+			<script type="text/javascript">
+				alert('Sorry You Already Voted')
+			</script>
+			<?php
+			return;
+		}
+		
+		// If all checks pass, proceed with login
+		session_start();
+		$_SESSION['voters_id'] = $voter['voters_id'];
+		header('location:vote.php');
 	}
 ?>
