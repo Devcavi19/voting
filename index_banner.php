@@ -8,7 +8,7 @@
         <nav class="nav-menue">
             <ul>
                 <li>
-                    <a href="../index.php">Home</a>
+                    <a href="../voting1/index.php">Home</a>
                 </li>
                 <li><a href="../candidate_path.php">Candidates</a></li>
             
