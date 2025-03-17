@@ -38,10 +38,10 @@
 		}
 		
 		// Check if account is active and unvoted
-		if($voter['account'] != 'active') {
+		if($voter['account'] != 'Active') {
 			?>
 			<script type="text/javascript">
-				alert('Your account is not Activated')
+				alert('Your account is not activated')
 			</script>
 			<?php
 			return;
