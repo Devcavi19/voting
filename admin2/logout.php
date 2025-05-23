@@ -27,44 +27,21 @@ if(isset($_GET['confirm']) && $_GET['confirm'] == 'yes') {
     header('location: index.php');
     exit;
 } else {
-    // Show the confirmation page
+    // Show the confirmation page using JavaScript
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Logout Confirmation</title>
-    <?php include('head.php'); ?>
-    <style>
-        .logout-container {
-            max-width: 500px;
-            margin: 100px auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background: #f9f9f9;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .btn-container {
-            margin-top: 20px;
-        }
-        .btn-container .btn {
-            margin: 0 10px;
-        }
-    </style>
+    <title>Logout</title>
 </head>
 <body>
-    <div class="container">
-        <div class="logout-container">
-            <h3>Logout Confirmation</h3>
-            <p>Are you sure you want to logout from the system?</p>
-            <div class="btn-container">
-                <a href="logout.php?confirm=yes" class="btn btn-danger">Confirm</a>
-                <a href="javascript:history.back()" class="btn btn-default">Cancel</a>
-            </div>
-        </div>
-    </div>
-    <?php include('script.php'); ?>
+    <script>
+        if(confirm("Are you sure you want to logout from the system?")) {
+            window.location.href = "logout.php?confirm=yes";
+        } else {
+            history.back();
+        }
+    </script>
 </body>
 </html>
 <?php
